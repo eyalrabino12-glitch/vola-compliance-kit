@@ -1,0 +1,100 @@
+import { createFileRoute } from "@tanstack/react-router";
+import { LegalPageLayout } from "@/components/LegalPageLayout";
+
+// Placeholder tokens are filled by scripts/fill-templates.mjs from site-legal.config.json.
+export const Route = createFileRoute("/accessibility")({
+  head: () => ({
+    meta: [
+      { title: "הצהרת נגישות | {{BUSINESS_NAME}}" },
+      { name: "description", content: "הצהרת הנגישות של אתר {{BUSINESS_NAME}} - {{BUSINESS_DESCRIPTION}}." },
+    ],
+    links: [{ rel: "canonical", href: "{{SITE_URL}}/accessibility" }],
+  }),
+  component: AccessibilityPage,
+});
+
+function AccessibilityPage() {
+  return (
+    <LegalPageLayout title="הצהרת נגישות" updated="{{UPDATED_MONTH_YEAR}}">
+      <p>
+        בית העסק "{{BUSINESS_NAME}}" (להלן: "העסק") רואה חשיבות עליונה במתן שירות שוויוני, מכבד
+        ונגיש לכלל לקוחותיו, לרבות אנשים עם מוגבלות, וזאת בהתאם לחוק שוויון זכויות לאנשים עם
+        מוגבלות, התשנ"ח-1998, ולתקנות שהותקנו מכוחו.
+      </p>
+
+      <h2>נגישות האתר</h2>
+      <p>
+        {/* SKILL rule: this conformance sentence may be published ONLY after
+            scripts/audit-a11y.mjs reports 0 errors on every page. While
+            remediation is in progress, use the fallback wording instead:
+            "אתר זה נבנה בשאיפה לעמוד בדרישות..." */}
+        אתר זה עומד בדרישות תקנות שוויון זכויות לאנשים עם מוגבלות (התאמות נגישות לשירות),
+        התשע"ג-2013, וברמת AA של התקן הישראלי ת"י 5568, המבוסס על הנחיות WCAG 2.0. בין היתר,
+        באתר יושמו:
+      </p>
+      <ul>
+        <li>ניתן לנווט באתר באמצעות מקלדת, כולל קישור "דלג לתוכן הראשי".</li>
+        <li>סימון מוקד (פוקוס) ברור וגלוי למשתמשים המנווטים באמצעות מקלדת.</li>
+        <li>טקסט חלופי (alt) לתמונות ותיאורים לרכיבים אינטראקטיביים.</li>
+        <li>מבנה כותרות תקין וסימוני ARIA לרכיבים דינמיים.</li>
+        <li>ניגודיות צבעים העומדת בדרישות התקן.</li>
+        <li>תמיכה בהעדפת "הפחתת תנועה" (Reduced Motion) במערכת ההפעלה.</li>
+        <li>תצוגה מותאמת למכשירים ניידים ולמסכים בגדלים שונים.</li>
+      </ul>
+      {/* IMPORTANT: only list items above that scripts/audit-a11y.mjs actually
+          verifies as passing on THIS site, plus the manual keyboard pass
+          required by SKILL Step 3. Never claim what isn't checked. */}
+
+      <h2>סייגים</h2>
+      <p>
+        אנו פועלים באופן שוטף לשיפור נגישות האתר. ייתכן שחלקים מסוימים טרם הונגשו במלואם (למשל
+        תכנים המוטמעים מצדדים שלישיים). אם נתקלתם בקושי או בבעיית נגישות כלשהי, נשמח שתפנו
+        אלינו ונפעל לתיקון בהקדם.
+      </p>
+
+      <h2>נגישות בית העסק</h2>
+      <p>
+        {/* REQUIRED for businesses with physical premises: the service-accessibility
+            regulations expect the statement to describe the actual physical
+            arrangements. Ask the owner and list them concretely (e.g. חניית נכים,
+            כניסה ללא מדרגות, רוחב מעברים, שירותים נגישים). Delete for online-only. */}
+        העסק ממוקם בכתובת {{ADDRESS}}. {{PHYSICAL_ACCESSIBILITY_DETAILS}}
+      </p>
+
+      <h2>רכז נגישות ודרכי פנייה</h2>
+      <p>
+        רכז הנגישות של העסק: {{COORDINATOR_BUSINESS}}.
+        <br />
+        טלפון:{" "}
+        <a href="{{PHONE_TEL}}" dir="ltr" className="underline">
+          {{PHONE_DISPLAY}}
+        </a>
+      </p>
+      <p>
+        פניות בנושא נגישות האתר (תמיכה טכנית): {{COORDINATOR_TECH_NAME}}, דוא"ל:{" "}
+        <a href="mailto:{{COORDINATOR_TECH_EMAIL}}" dir="ltr" className="underline">
+          {{COORDINATOR_TECH_EMAIL}}
+        </a>
+      </p>
+      <p>
+        אנא ציינו בפנייה את מהות הבעיה, את הדף שבו נתקלתם בה ואת אמצעי הטכנולוגיה המסייעת שבו
+        אתם משתמשים - ונשוב אליכם בתוך {{RESPONSE_DAYS}} ימי עסקים.
+      </p>
+
+      <h2>הליך פנייה לגורם חיצוני</h2>
+      <p>
+        אם פניתם אלינו ופנייתכם לא נענתה בפרק זמן סביר, או שאינכם שבעי רצון מהטיפול, באפשרותכם לפנות
+        לנציבות שוויון זכויות לאנשים עם מוגבלות במשרד המשפטים, בכתובת:{" "}
+        <a
+          href="https://www.gov.il/he/departments/moj_disability_rights/govil-landing-page"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="underline"
+        >
+          אתר הנציבות
+        </a>
+        .
+      </p>
+    </LegalPageLayout>
+  );
+}

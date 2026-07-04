@@ -1,0 +1,45 @@
+import type { ReactNode } from "react";
+
+// Generic legal-page layout with NO framework dependencies: plain <a> links
+// (work with any router) and only shadcn theme variables (background/
+// foreground/primary/muted/border — present in every default shadcn setup;
+// in a plain-Tailwind project define them or swap the classes). Restyle to
+// the site's brand after copying. Placeholder tokens are filled by
+// scripts/fill-templates.mjs from site-legal.config.json.
+export function LegalPageLayout({
+  title,
+  updated,
+  children,
+}: {
+  title: string;
+  updated: string;
+  children: ReactNode;
+}) {
+  return (
+    <div className="min-h-screen bg-background">
+      <header className="bg-primary text-primary-foreground">
+        <div className="max-w-3xl mx-auto px-5 sm:px-8 py-5 flex items-center justify-between">
+          <a href="/" className="font-semibold text-lg tracking-wide">
+            {{BUSINESS_NAME}}
+          </a>
+          <a href="/" className="text-sm opacity-90 hover:opacity-100 transition">
+            → חזרה לעמוד הבית
+          </a>
+        </div>
+      </header>
+      <main className="max-w-3xl mx-auto px-5 sm:px-8 py-12 sm:py-16">
+        <h1 className="text-3xl sm:text-4xl font-semibold text-foreground text-balance">{title}</h1>
+        <p className="mt-2 text-xs text-muted-foreground">עודכן לאחרונה: {updated}</p>
+        <div className="mt-8 space-y-6 text-sm sm:text-base text-foreground/85 leading-relaxed [&_h2]:text-xl [&_h2]:sm:text-2xl [&_h2]:font-semibold [&_h2]:text-foreground [&_h2]:mt-8 [&_ul]:list-disc [&_ul]:pr-5 [&_ul]:space-y-1">
+          {children}
+        </div>
+      </main>
+      <footer className="border-t border-border py-8 text-center text-xs text-muted-foreground">
+        {{BUSINESS_NAME}} · {{ADDRESS}} ·{" "}
+        <a href="{{PHONE_TEL}}" dir="ltr" className="underline">
+          {{PHONE_DISPLAY}}
+        </a>
+      </footer>
+    </div>
+  );
+}

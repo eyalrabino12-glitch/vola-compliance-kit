@@ -1,0 +1,37 @@
+# Copy into each site's .github/workflows/ — runs the compliance audit on every PR.
+# Adjust the install/serve commands to the project (this version assumes bun + vite).
+# No browser-install step needed: ubuntu-latest ships with Google Chrome and the
+# audit script falls back to it automatically (channel: "chrome").
+name: a11y-audit
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: oven-sh/setup-bun@v2
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Start dev server
+        run: |
+          bunx vite dev --host 127.0.0.1 --port 5174 > vite.log 2>&1 &
+          for i in $(seq 1 60); do
+            curl -sf http://127.0.0.1:5174/ >/dev/null && exit 0
+            sleep 1
+          done
+          echo "server never came up:" && cat vite.log && exit 1
+
+      - name: Run compliance audit
+        run: node scripts/audit-a11y.mjs http://127.0.0.1:5174
+
+      - name: Dump server log on failure
+        if: failure()
+        run: cat vite.log || true

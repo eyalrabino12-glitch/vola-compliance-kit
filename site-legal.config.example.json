@@ -1,0 +1,39 @@
+{
+  "$comment": "Copy to site-legal.config.json in the project root and fill in. `placeholders` keys map 1:1 to the {{TOKEN}} markers in templates/ (filled by scripts/fill-templates.mjs). `audit` is read by scripts/audit-a11y.mjs.",
+  "placeholders": {
+    "BUSINESS_NAME": "עיצוב שיער אלי בראל",
+    "BUSINESS_DESCRIPTION": "מספרה בקרית אונו",
+    "ADDRESS": "המעגל 58, קרית אונו",
+    "PHONE_DISPLAY": "03-534-3150",
+    "PHONE_TEL": "tel:035343150",
+    "SITE_URL": "https://elibarel.com",
+    "UPDATED_MONTH_YEAR": "יולי 2026",
+    "COORDINATOR_BUSINESS": "אלי בראל",
+    "COORDINATOR_TECH_NAME": "Vola Web Design",
+    "COORDINATOR_TECH_EMAIL": "volawebdesign@gmail.com",
+    "CONTACT_EMAIL": "volawebdesign@gmail.com",
+    "PHYSICAL_ACCESSIBILITY_DETAILS": "בסמוך לעסק מצויה חניית נכים ציבורית, הכניסה לעסק ללא מדרגות ורוחב המעברים מאפשר תנועת כיסא גלגלים.",
+    "RESPONSE_DAYS": "7",
+    "ANALYTICS_TOOLS": "Google Analytics",
+    "THIRD_PARTY_SERVICES": "Google Analytics, מפות Google, גופנים של Google (Google Fonts - טעינת הגופנים כוללת העברת כתובת ה-IP לשרתי Google), וואטסאפ, אינסטגרם ו-Waze"
+  },
+  "hasContactForms": false,
+  "audit": {
+    "baseUrl": "http://127.0.0.1:5174",
+    "pages": ["/", "/accessibility", "/privacy"],
+    "lang": "he",
+    "dir": "rtl",
+    "disclosedHosts": [
+      "www.googletagmanager.com",
+      "www.google-analytics.com",
+      "analytics.google.com",
+      "region1.google-analytics.com",
+      "fonts.googleapis.com",
+      "fonts.gstatic.com",
+      "www.google.com",
+      "maps.googleapis.com",
+      "maps.gstatic.com",
+      "streetviewpixels-pa.googleapis.com"
+    ]
+  }
+}

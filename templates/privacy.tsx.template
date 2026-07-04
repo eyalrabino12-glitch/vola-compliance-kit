@@ -1,0 +1,108 @@
+import { createFileRoute } from "@tanstack/react-router";
+import { LegalPageLayout } from "@/components/LegalPageLayout";
+
+// Placeholder tokens are filled by scripts/fill-templates.mjs from site-legal.config.json.
+// If the site has contact forms / stores personal data, ADD a data-retention
+// and database-registration section — this template assumes no forms.
+export const Route = createFileRoute("/privacy")({
+  head: () => ({
+    meta: [
+      { title: "מדיניות פרטיות | {{BUSINESS_NAME}}" },
+      { name: "description", content: "מדיניות הפרטיות של אתר {{BUSINESS_NAME}} - {{BUSINESS_DESCRIPTION}}." },
+    ],
+    links: [{ rel: "canonical", href: "{{SITE_URL}}/privacy" }],
+  }),
+  component: PrivacyPage,
+});
+
+function PrivacyPage() {
+  return (
+    <LegalPageLayout title="מדיניות פרטיות" updated="{{UPDATED_MONTH_YEAR}}">
+      <p>
+        מדיניות פרטיות זו מסבירה איזה מידע נאסף במסגרת השימוש באתר של "{{BUSINESS_NAME}}" (להלן:
+        "האתר"), כיצד הוא נשמר ולאילו מטרות הוא משמש, בהתאם לחוק הגנת הפרטיות, התשמ"א-1981, על
+        תיקוניו (לרבות תיקון 13).
+      </p>
+
+      <h2>איזה מידע נאסף</h2>
+      <ul>
+        <li>
+          <strong>מידע סטטיסטי ונתוני שימוש:</strong> האתר עושה שימוש בכלי {{ANALYTICS_TOOLS}}{" "}
+          לצורך מדידת תנועה ושיפור חוויית השימוש. הכלי אוסף, באמצעות עוגיות ומזהים מקוונים,
+          נתונים כגון דפים שנצפו, משך ביקור, סוג דפדפן ומכשיר וכתובת IP. איננו עושים שימוש
+          בנתונים אלה לזיהוי אישי של גולשים.
+        </li>
+        <li>
+          <strong>מידע שנמסר ביוזמתכם:</strong> האתר אינו כולל טפסים ואינו שומר פרטים אישיים.
+          יצירת קשר מתבצעת ישירות בערוצים חיצוניים (טלפון, וואטסאפ וכדומה) - והמידע שתמסרו
+          בערוצים אלה כפוף למדיניות הפרטיות של אותם שירותים.
+        </li>
+      </ul>
+
+      <h2>עוגיות (Cookies)</h2>
+      <p>
+        האתר משתמש בעוגיות של כלי המדידה, וכן באחסון מקומי בדפדפן (Local Storage) לשמירת העדפות
+        תצוגה - למשל סגירת הודעת העוגיות. ניתן לחסום או למחוק עוגיות ונתוני אחסון מקומי בכל עת
+        דרך הגדרות הדפדפן, וחסימתם לא תפגע ביכולת הגלישה באתר. ניתן גם להתקין את{" "}
+        <a
+          href="https://tools.google.com/dlpage/gaoptout"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="underline"
+        >
+          התוסף לביטול הצטרפות של Google Analytics
+        </a>
+        .
+      </p>
+
+      <h2>שירותי צד שלישי</h2>
+      <p>
+        {/* Must list EVERY third-party the site actually contacts — the audit
+            script cross-checks this against real network requests. */}
+        האתר טוען משאבים משירותים של צדדים שלישיים ({{THIRD_PARTY_SERVICES}}); בעת טעינת האתר
+        מועברים לשירותים אלה נתונים טכניים כגון כתובת IP, בהתאם למדיניות הפרטיות שלהם. בנוסף,
+        לחיצה על קישורים חיצוניים (למשל וואטסאפ או ניווט במפות) מעבירה אתכם לשירות החיצוני,
+        והשימוש בו כפוף לתנאיו.
+      </p>
+
+      <h2>אבטחת מידע</h2>
+      <p>
+        האתר אינו אוסף ואינו שומר מידע אישי בשרתיו, ולא מתנהל בו מאגר מידע של גולשים. הנתונים
+        הסטטיסטיים נשמרים בשרתי ספקי המדידה בהתאם למדיניות האבטחה שלהם, ועשויים להישמר ולהיות
+        מעובדים בשרתים המצויים מחוץ לישראל.
+      </p>
+
+      <h2>זכויותיכם</h2>
+      <p>
+        על פי חוק הגנת הפרטיות, עומדת לכם הזכות לפנות אלינו בכל שאלה בנוגע למידע אודותיכם,
+        לרבות בקשה לעיין במידע, לתקנו או למחקו. לפניות: טלפון{" "}
+        <a href="{{PHONE_TEL}}" dir="ltr" className="underline">
+          {{PHONE_DISPLAY}}
+        </a>
+        {" "}או דוא"ל{" "}
+        <a href="mailto:{{CONTACT_EMAIL}}" dir="ltr" className="underline">
+          {{CONTACT_EMAIL}}
+        </a>
+        .
+      </p>
+      <p>
+        בנוסף, עומדת לכם הזכות להגיש תלונה לרשות להגנת הפרטיות באמצעות{" "}
+        <a
+          href="https://www.gov.il/he/departments/the_privacy_protection_authority/govil-landing-page"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="underline"
+        >
+          אתר הרשות
+        </a>
+        .
+      </p>
+
+      <h2>עדכונים למדיניות</h2>
+      <p>
+        מדיניות זו עשויה להתעדכן מעת לעת. הנוסח המחייב הוא הנוסח המפורסם בעמוד זה, בציון תאריך
+        העדכון האחרון.
+      </p>
+    </LegalPageLayout>
+  );
+}
