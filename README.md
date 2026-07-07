@@ -27,6 +27,9 @@ directory you run it from).
 | Path | What it is |
 | --- | --- |
 | `SKILL.md` | Step-by-step playbook for applying the kit to a new site (written for Claude Code sessions; readable by humans too) |
+| `SKILL-content-gaps.md` | Playbook for the content-gaps אפיון: find every placeholder/stock/missing piece of content on a site draft and produce the client-facing "send us these things" checklist |
+| `scripts/audit-content.mjs` | Crawls the rendered site and flags placeholder images, dummy text, fake contact data, default Lovable branding, and missing business info |
+| `templates/content-gaps-report.md.template` | Client-facing Hebrew report skeleton for the content-gaps אפיון (filled by hand, not by fill-templates) |
 | `site-legal.config.example.json` | Per-site facts: business name, address, phone, coordinator, disclosed third-party hosts |
 | `templates/LegalPageLayout.tsx.template` | Shared layout for both legal pages (framework-free: plain links + shadcn theme variables) |
 | `templates/accessibility.tsx.template` | Accessibility statement page with `{{PLACEHOLDERS}}` |
