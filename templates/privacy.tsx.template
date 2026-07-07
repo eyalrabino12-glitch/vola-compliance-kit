@@ -2,8 +2,11 @@ import { createFileRoute } from "@tanstack/react-router";
 import { LegalPageLayout } from "@/components/LegalPageLayout";
 
 // Placeholder tokens are filled by scripts/fill-templates.mjs from site-legal.config.json.
-// If the site has contact forms / stores personal data, ADD a data-retention
-// and database-registration section — this template assumes no forms.
+// Conditional sections are driven by config.flags:
+//   hasAnalytics    — analytics/cookies disclosures (GA etc.)
+//   hasContactForms — the Amendment-13 section-11 notice block for forms that
+//                     collect personal data (name/phone/email). Lawyer review
+//                     is MANDATORY when this flag is on (see SKILL.md).
 export const Route = createFileRoute("/privacy")({
   head: () => ({
     meta: [
@@ -23,22 +26,67 @@ function PrivacyPage() {
         "האתר"), כיצד הוא נשמר ולאילו מטרות הוא משמש, בהתאם לחוק הגנת הפרטיות, התשמ"א-1981, על
         תיקוניו (לרבות תיקון 13).
       </p>
+      <p>
+        האחראי למידע הנאסף באתר: "{{BUSINESS_NAME}}", {{ADDRESS}}. דרכי התקשרות בנושאי
+        פרטיות: טלפון{" "}
+        <a href="{{PHONE_TEL}}" dir="ltr" className="underline">
+          {{PHONE_DISPLAY}}
+        </a>
+        , דוא"ל{" "}
+        <a href="mailto:{{CONTACT_EMAIL}}" dir="ltr" className="underline">
+          {{CONTACT_EMAIL}}
+        </a>
+        .
+      </p>
 
       <h2>איזה מידע נאסף</h2>
       <ul>
+        {{#hasAnalytics}}
         <li>
           <strong>מידע סטטיסטי ונתוני שימוש:</strong> האתר עושה שימוש בכלי {{ANALYTICS_TOOLS}}{" "}
           לצורך מדידת תנועה ושיפור חוויית השימוש. הכלי אוסף, באמצעות עוגיות ומזהים מקוונים,
           נתונים כגון דפים שנצפו, משך ביקור, סוג דפדפן ומכשיר וכתובת IP. איננו עושים שימוש
-          בנתונים אלה לזיהוי אישי של גולשים.
+          בנתונים אלה לזיהוי אישי של גולשים, ואיננו עושים שימוש בכלי פרסום או פרופיילינג.
         </li>
+        {{/hasAnalytics}}
+        {{#!hasContactForms}}
         <li>
           <strong>מידע שנמסר ביוזמתכם:</strong> האתר אינו כולל טפסים ואינו שומר פרטים אישיים.
           יצירת קשר מתבצעת ישירות בערוצים חיצוניים (טלפון, וואטסאפ וכדומה) - והמידע שתמסרו
           בערוצים אלה כפוף למדיניות הפרטיות של אותם שירותים.
         </li>
+        {{/!hasContactForms}}
+        {{#hasContactForms}}
+        <li>
+          <strong>מידע שנמסר ביוזמתכם:</strong> באמצעות טפסי האתר תוכלו למסור לנו פרטים כגון
+          שם, טלפון ודוא"ל, כמפורט בסעיף "טפסים ומסירת מידע" להלן.
+        </li>
+        {{/hasContactForms}}
       </ul>
 
+      {{#hasContactForms}}
+      <h2>טפסים ומסירת מידע ביוזמתכם</h2>
+      {/* This block implements the section-11 (חובת יידוע) notice items required
+          by Amendment 13: voluntariness, purpose, recipients, consequence of
+          refusal, controller identity (above) and data-subject rights (below).
+          Also link to this policy NEXT TO every form's submit button.
+          Lawyer review is mandatory for sites with forms — see SKILL.md. */}
+      <p>
+        מסירת המידע בטפסי האתר נעשית מרצונכם החופשי ובהסכמתכם - לא חלה עליכם חובה חוקית
+        למסרו. אם תבחרו שלא למסור את הפרטים, לא נוכל להשיב לפנייתכם דרך הטופס, אך תמיד
+        תוכלו ליצור עמנו קשר בטלפון. המידע הנמסר משמש אך ורק למענה לפנייתכם ולמתן השירות
+        המבוקש, והוא לא יועבר לצדדים שלישיים - למעט ספקי תשתית האתר לצורך תפעולו השוטף,
+        או אם נידרש לכך על פי דין. המידע נשמר {{FORM_DATA_RETENTION}}, ולאחר מכן נמחק.
+      </p>
+      <p>
+        לא נשלח אליכם דברי פרסומת בדוא"ל או במסרונים אלא בהסכמתכם המפורשת מראש, בהתאם
+        לסעיף 30א לחוק התקשורת (בזק ושידורים), התשמ"ב-1982, ובכל דיוור תעמוד לרשותכם
+        אפשרות הסרה. ככל שיתבצע דיוור ישיר כהגדרתו בחוק הגנת הפרטיות, עומדת לכם הזכות
+        לדרוש בכתב את מחיקת פרטיכם ממאגר הדיוור, ואנו נפעל בהתאם ונאשר את המחיקה.
+      </p>
+      {{/hasContactForms}}
+
+      {{#hasAnalytics}}
       <h2>עוגיות (Cookies)</h2>
       <p>
         האתר משתמש בעוגיות של כלי המדידה, וכן באחסון מקומי בדפדפן (Local Storage) לשמירת העדפות
@@ -52,30 +100,54 @@ function PrivacyPage() {
         >
           התוסף לביטול הצטרפות של Google Analytics
         </a>
-        .
+        . נתוני המדידה נשמרים לפרק הזמן המוגדר אצל ספק המדידה ונמחקים בחלוף תקופה זו.
       </p>
+      {{/hasAnalytics}}
+      {{#!hasAnalytics}}
+      <h2>עוגיות (Cookies)</h2>
+      <p>
+        האתר אינו עושה שימוש בעוגיות מדידה, ניטור או פרסום. ככל שנעשה שימוש באחסון מקומי
+        בדפדפן (Local Storage) הוא משמש לשמירת העדפות תצוגה בלבד, ואינו כולל מידע אישי.
+      </p>
+      {{/!hasAnalytics}}
 
       <h2>שירותי צד שלישי</h2>
       <p>
         {/* Must list EVERY third-party the site actually contacts — the audit
-            script cross-checks this against real network requests. */}
+            script cross-checks this against real network requests. Keep the
+            list specific: the PPA's 2026 consent opinion rejects vague
+            catch-alls (e.g. "בין היתר") for recipients and purposes. */}
         האתר טוען משאבים משירותים של צדדים שלישיים ({{THIRD_PARTY_SERVICES}}); בעת טעינת האתר
         מועברים לשירותים אלה נתונים טכניים כגון כתובת IP, בהתאם למדיניות הפרטיות שלהם. בנוסף,
         לחיצה על קישורים חיצוניים (למשל וואטסאפ או ניווט במפות) מעבירה אתכם לשירות החיצוני,
         והשימוש בו כפוף לתנאיו.
       </p>
 
-      <h2>אבטחת מידע</h2>
+      <h2>אבטחת מידע והעברת מידע לחו"ל</h2>
+      {{#!hasContactForms}}
       <p>
-        האתר אינו אוסף ואינו שומר מידע אישי בשרתיו, ולא מתנהל בו מאגר מידע של גולשים. הנתונים
-        הסטטיסטיים נשמרים בשרתי ספקי המדידה בהתאם למדיניות האבטחה שלהם, ועשויים להישמר ולהיות
-        מעובדים בשרתים המצויים מחוץ לישראל.
+        האתר אינו אוסף ואינו שומר מידע אישי בשרתיו, ולא מתנהל בו מאגר מידע של גולשים.
+      </p>
+      {{/!hasContactForms}}
+      {{#hasContactForms}}
+      <p>
+        המידע הנמסר בטפסי האתר נשמר באופן מאובטח, ואנו מיישמים אמצעי הגנה בהתאם לתקנות
+        הגנת הפרטיות (אבטחת מידע), התשע"ז-2017, לרבות בחינה תקופתית של הצורך בהמשך שמירת
+        המידע ביחס למטרות איסופו.
+      </p>
+      {{/hasContactForms}}
+      <p>
+        נתונים המעובדים על ידי ספקי שירות (כגון ספקי אחסון ומדידה) עשויים להישמר ולהיות
+        מעובדים בשרתים המצויים מחוץ לישראל. העברה כאמור נעשית בהתאם לתקנות הגנת הפרטיות
+        (העברת מידע אל מאגרי מידע שמחוץ לגבולות המדינה), התשס"א-2001 - ובכלל זה בהסתמך על
+        הסכמתכם לשימוש באתר כמפורט במדיניות זו ועל התחייבויות ספקי השירות לאבטחת המידע.
       </p>
 
       <h2>זכויותיכם</h2>
       <p>
         על פי חוק הגנת הפרטיות, עומדת לכם הזכות לפנות אלינו בכל שאלה בנוגע למידע אודותיכם,
-        לרבות בקשה לעיין במידע, לתקנו או למחקו. לפניות: טלפון{" "}
+        לרבות בקשה לעיין במידע, לתקנו או למחקו. בקשת עיון תיענה בתוך 30 ימים; מידע שיימצא
+        שאינו נכון, שלם, ברור או מעודכן - יתוקן או יימחק לפי בקשתכם. לפניות: טלפון{" "}
         <a href="{{PHONE_TEL}}" dir="ltr" className="underline">
           {{PHONE_DISPLAY}}
         </a>
@@ -100,8 +172,8 @@ function PrivacyPage() {
 
       <h2>עדכונים למדיניות</h2>
       <p>
-        מדיניות זו עשויה להתעדכן מעת לעת. הנוסח המחייב הוא הנוסח המפורסם בעמוד זה, בציון תאריך
-        העדכון האחרון.
+        מדיניות זו עשויה להתעדכן מעת לעת, למשל בעת הוספת שירות או כלי חדש לאתר. הנוסח
+        המחייב הוא הנוסח המפורסם בעמוד זה, בציון תאריך העדכון האחרון.
       </p>
     </LegalPageLayout>
   );

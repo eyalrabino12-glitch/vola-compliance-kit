@@ -1,5 +1,5 @@
 {
-  "$comment": "Copy to site-legal.config.json in the project root and fill in. `placeholders` keys map 1:1 to the {{TOKEN}} markers in templates/ (filled by scripts/fill-templates.mjs). `audit` is read by scripts/audit-a11y.mjs.",
+  "$comment": "Copy to site-legal.config.json in the project root and fill in. `placeholders` keys map 1:1 to the {{TOKEN}} markers in templates/ and `flags` drive the {{#flag}}...{{/flag}} conditional blocks (both handled by scripts/fill-templates.mjs). `audit` is read by scripts/audit-a11y.mjs.",
   "placeholders": {
     "BUSINESS_NAME": "עיצוב שיער אלי בראל",
     "BUSINESS_DESCRIPTION": "מספרה בקרית אונו",
@@ -8,19 +8,31 @@
     "PHONE_TEL": "tel:035343150",
     "SITE_URL": "https://elibarel.com",
     "UPDATED_MONTH_YEAR": "יולי 2026",
+    "COORDINATOR_TITLE": "איש הקשר לפניות בנושא נגישות",
     "COORDINATOR_BUSINESS": "אלי בראל",
     "COORDINATOR_TECH_NAME": "Vola Web Design",
     "COORDINATOR_TECH_EMAIL": "volawebdesign@gmail.com",
     "CONTACT_EMAIL": "volawebdesign@gmail.com",
+    "ACCESSIBILITY_VENDOR": "Vola Web Design",
+    "AUDIT_MONTH_YEAR": "יולי 2026",
+    "BROWSERS_TESTED": "Chrome, Edge, Firefox ו-Safari",
+    "ASSISTIVE_TECH_TESTED": "קורא המסך NVDA וניווט מלא במקלדת",
+    "KNOWN_LIMITATIONS": "נכון למועד עדכון הצהרה זו לא ידועות לנו מגבלות נגישות נוספות.",
     "PHYSICAL_ACCESSIBILITY_DETAILS": "בסמוך לעסק מצויה חניית נכים ציבורית, הכניסה לעסק ללא מדרגות ורוחב המעברים מאפשר תנועת כיסא גלגלים.",
     "RESPONSE_DAYS": "7",
     "ANALYTICS_TOOLS": "Google Analytics",
     "THIRD_PARTY_SERVICES": "Google Analytics, מפות Google, גופנים של Google (Google Fonts - טעינת הגופנים כוללת העברת כתובת ה-IP לשרתי Google), וואטסאפ, אינסטגרם ו-Waze"
   },
-  "hasContactForms": false,
+  "$flags_comment": "hasContactForms: site has forms collecting personal data (lawyer review MANDATORY when true; FORM_DATA_RETENTION placeholder becomes required, e.g. 'למשך שנתיים ממועד הפנייה'). hasAnalytics: analytics/measurement tools installed. isTurnoverExempt: business relies on the low-turnover exemption from reg. 35 (see SKILL Step 0). hasStatutoryCoordinator: business employs 25+ people, so a statutory רכז נגישות was appointed (also set COORDINATOR_TITLE to 'רכז/ת הנגישות').",
+  "flags": {
+    "hasContactForms": false,
+    "hasAnalytics": true,
+    "isTurnoverExempt": false,
+    "hasStatutoryCoordinator": false
+  },
   "audit": {
     "baseUrl": "http://127.0.0.1:5174",
-    "pages": ["/", "/accessibility", "/privacy"],
+    "pages": ["/", "/accessibility", "/privacy", "/terms"],
     "lang": "he",
     "dir": "rtl",
     "disclosedHosts": [
