@@ -14,6 +14,10 @@
  *      page must be in audit.disclosedHosts (ERROR — this gates CI);
  *      /privacy must keep mentioning cookies
  *   5. No unfilled {{TOKEN}} placeholders in body text, title, or head
+ *   6. Legal-prominence checks: every page links to /accessibility and
+ *      /privacy (reg. 35(ה) — the statement must be reachable prominently),
+ *      and /accessibility keeps the elements the regulations/guidance expect
+ *      (ת"י 5568 + WCAG, browsers tested, contact channel, נציבות escalation)
  *
  * Usage:  node scripts/audit-a11y.mjs [baseUrl]
  * Deps:   axe-core, playwright-core (devDependencies)
@@ -38,7 +42,8 @@ const PAGES = A.pages ?? ["/"];
 const LANG = A.lang ?? "he";
 const DIR = A.dir ?? "rtl";
 const DISCLOSED = A.disclosedHosts ?? [];
-const EXPECTS_ANALYTICS = /google analytics/i.test(cfg.placeholders?.ANALYTICS_TOOLS ?? "");
+const EXPECTS_ANALYTICS =
+  cfg.flags?.hasAnalytics ?? /google analytics/i.test(cfg.placeholders?.ANALYTICS_TOOLS ?? "");
 const VIEWPORTS = [
   { name: "desktop", width: 1280, height: 900 },
   { name: "mobile", width: 390, height: 844 },
@@ -171,6 +176,49 @@ for (const vp of VIEWPORTS) {
         });
         if (!(first.tag === "A" && first.href.startsWith("#")))
           add("ERROR", where, `first Tab did not land on a skip link (landed on <${first.tag}> "${first.text}") — see the skip-link snippet in SKILL.md`);
+      }
+
+      // legal prominence (reg. 35(ה)): every page must link to the statement
+      // and the privacy policy (footer or menu) — checked once per page
+      if (vp.name === "desktop") {
+        const linkedPaths = await page.evaluate(() => {
+          const paths = new Set();
+          for (const a of document.querySelectorAll("a[href]")) {
+            try {
+              const u = new URL(a.getAttribute("href"), location.href);
+              if (u.origin === location.origin) paths.add(u.pathname.replace(/\/+$/, "") || "/");
+            } catch {
+              /* ignore unparsable hrefs */
+            }
+          }
+          return [...paths];
+        });
+        for (const target of ["/accessibility", "/privacy"]) {
+          if (!linkedPaths.includes(target))
+            add("ERROR", where, `no link to ${target} on this page — the accessibility statement and privacy policy must be reachable prominently from every page (reg. 35(ה))`);
+        }
+      }
+
+      // statement-content check: keep the elements the regulations/guidance
+      // expect in the accessibility statement (guards against later edits
+      // gutting the generated page)
+      if (path === "/accessibility" && vp.name === "desktop") {
+        const text = await page.evaluate(() => document.body.innerText);
+        const hasContactLink = await page.evaluate(
+          () => !!document.querySelector('a[href^="tel:"], a[href^="mailto:"]'),
+        );
+        const requiredMentions = [
+          ["5568", "the ת\"י 5568 standard"],
+          ["WCAG", "the WCAG guidelines"],
+          ["דפדפנ", "which browsers were tested"],
+          ["נציבות", "escalation to the נציבות (Equal Rights Commission)"],
+        ];
+        for (const [needle, what] of requiredMentions) {
+          if (!text.includes(needle))
+            add("ERROR", where, `accessibility statement no longer mentions ${what} ("${needle}")`);
+        }
+        if (!hasContactLink)
+          add("ERROR", where, "accessibility statement has no tel:/mailto: contact link — reg. 35(ה) requires a contact channel for accessibility inquiries");
       }
 
       // only a site that actually runs analytics must keep the cookies wording

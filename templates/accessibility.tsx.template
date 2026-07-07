@@ -2,6 +2,10 @@ import { createFileRoute } from "@tanstack/react-router";
 import { LegalPageLayout } from "@/components/LegalPageLayout";
 
 // Placeholder tokens are filled by scripts/fill-templates.mjs from site-legal.config.json.
+// Section structure follows the נציבות guidance (reg. 35(ה)) and the common
+// structure of leading Israeli accessibility statements: conformance level,
+// how/when the site was tested, adjustments, known limitations + alternatives,
+// physical arrangements, contact person, escalation to the Commission.
 export const Route = createFileRoute("/accessibility")({
   head: () => ({
     meta: [
@@ -19,57 +23,105 @@ function AccessibilityPage() {
       <p>
         בית העסק "{{BUSINESS_NAME}}" (להלן: "העסק") רואה חשיבות עליונה במתן שירות שוויוני, מכבד
         ונגיש לכלל לקוחותיו, לרבות אנשים עם מוגבלות, וזאת בהתאם לחוק שוויון זכויות לאנשים עם
-        מוגבלות, התשנ"ח-1998, ולתקנות שהותקנו מכוחו.
+        מוגבלות, התשנ"ח-1998, ולתקנות שהותקנו מכוחו, ובכללן תקנות שוויון זכויות לאנשים עם
+        מוגבלות (התאמות נגישות לשירות), התשע"ג-2013.
       </p>
 
-      <h2>נגישות האתר</h2>
+      <h2>רמת הנגישות של האתר</h2>
       <p>
-        {/* SKILL rule: this conformance sentence may be published ONLY after
+        {/* SKILL rule: this sentence may be published ONLY after
             scripts/audit-a11y.mjs reports 0 errors on every page. While
             remediation is in progress, use the fallback wording instead:
-            "אתר זה נבנה בשאיפה לעמוד בדרישות..." */}
-        אתר זה עומד בדרישות תקנות שוויון זכויות לאנשים עם מוגבלות (התאמות נגישות לשירות),
-        התשע"ג-2013, וברמת AA של התקן הישראלי ת"י 5568, המבוסס על הנחיות WCAG 2.0. בין היתר,
-        באתר יושמו:
+            "אתר זה נבנה בשאיפה לעמוד בדרישות התקן..." */}
+        אתר זה הונגש בהתאם לתקנה 35 לתקנות התאמות נגישות לשירות ולתקן הישראלי ת"י 5568
+        ("קווים מנחים לנגישות תכנים באינטרנט") ברמה AA, המבוסס על הנחיות WCAG 2.1.
       </p>
+      <p>
+        אנו ממשיכים לפעול באופן שוטף לשיפור נגישות האתר, כחלק ממחויבותנו לאפשר לכלל
+        האוכלוסייה, לרבות אנשים עם מוגבלות, להשתמש בו בקלות ובנוחות. ייתכן שיימצאו באתר
+        חלקים שטרם הונגשו במלואם - נשמח לכל פנייה בנושא כדי שנוכל לתקן.
+      </p>
+
+      <h2>כיצד בוצעה ההנגשה</h2>
+      <p>
+        הנגשת האתר בוצעה על ידי {{ACCESSIBILITY_VENDOR}} כחלק מבניית האתר עצמו: התאמות
+        הנגישות מובנות בקוד האתר ואינן מתבססות על תוסף נגישות חיצוני. בדיקת הנגישות
+        האחרונה נערכה ב{{AUDIT_MONTH_YEAR}} ושילבה בדיקה אוטומטית (WCAG 2.1 AA) ובדיקות
+        ידניות. האתר נבדק בדפדפנים {{BROWSERS_TESTED}}, וכן באמצעות {{ASSISTIVE_TECH_TESTED}}.
+      </p>
+
+      <h2>התאמות הנגישות באתר</h2>
       <ul>
-        <li>ניתן לנווט באתר באמצעות מקלדת, כולל קישור "דלג לתוכן הראשי".</li>
+        <li>ניתן לנווט באתר באמצעות מקלדת בלבד, כולל קישור "דלג לתוכן הראשי".</li>
         <li>סימון מוקד (פוקוס) ברור וגלוי למשתמשים המנווטים באמצעות מקלדת.</li>
         <li>טקסט חלופי (alt) לתמונות ותיאורים לרכיבים אינטראקטיביים.</li>
-        <li>מבנה כותרות תקין וסימוני ARIA לרכיבים דינמיים.</li>
+        <li>מבנה כותרות תקין וסימוני ARIA לרכיבים דינמיים, לתמיכה בקוראי מסך.</li>
         <li>ניגודיות צבעים העומדת בדרישות התקן.</li>
         <li>תמיכה בהעדפת "הפחתת תנועה" (Reduced Motion) במערכת ההפעלה.</li>
-        <li>תצוגה מותאמת למכשירים ניידים ולמסכים בגדלים שונים.</li>
+        <li>תצוגה מותאמת למכשירים ניידים ולמסכים בגדלים שונים, כולל הגדלת תצוגה.</li>
       </ul>
       {/* IMPORTANT: only list items above that scripts/audit-a11y.mjs actually
           verifies as passing on THIS site, plus the manual keyboard pass
           required by SKILL Step 3. Never claim what isn't checked. */}
-
-      <h2>סייגים</h2>
       <p>
-        אנו פועלים באופן שוטף לשיפור נגישות האתר. ייתכן שחלקים מסוימים טרם הונגשו במלואם (למשל
-        תכנים המוטמעים מצדדים שלישיים). אם נתקלתם בקושי או בבעיית נגישות כלשהי, נשמח שתפנו
-        אלינו ונפעל לתיקון בהקדם.
+        הפעלה באמצעות מקלדת: מקש Tab מעביר לרכיב הבא ו-Shift+Tab לרכיב הקודם; מקש Enter
+        מפעיל קישור או כפתור; מקש Esc סוגר חלונות קופצים ותפריטים. ההקשה הראשונה על Tab
+        בכל עמוד מציגה את הקישור "דלג לתוכן הראשי".
       </p>
+
+      <h2>מגבלות נגישות ידועות וחלופות</h2>
+      <p>
+        למרות מאמצינו להנגיש את כלל דפי האתר, ייתכן שחלקים מסוימים טרם הונגשו במלואם -
+        למשל תכנים המוטמעים מצדדים שלישיים (כגון מפות), שנגישותם תלויה בספק החיצוני.
+        {" "}{{KNOWN_LIMITATIONS}}
+      </p>
+      <p>
+        אם נתקלתם בתוכן או בשירות שאינו נגיש עבורכם, ניתן לקבל את המידע או השירות בדרך
+        חלופית בטלפון{" "}
+        <a href="{{PHONE_TEL}}" dir="ltr" className="underline">
+          {{PHONE_DISPLAY}}
+        </a>
+        {" "}- ואנו נפעל לתיקון הליקוי בהקדם.
+      </p>
+
+      {{#isTurnoverExempt}}
+      <h2>פטור מהנגשת שירותי אינטרנט</h2>
+      <p>
+        העסק זכאי לפטור מחובת הנגשת שירותי האינטרנט לפי תקנה 35 לתקנות התאמות נגישות
+        לשירות, בשל היקף מחזורו השנתי. עם זאת, אנו רואים בנגישות ערך ופועלים להנגשת האתר
+        בפועל כמפורט בהצהרה זו. בכל בקשה לקבלת מידע או שירות בדרך נגישה ניתן לפנות אלינו
+        בערוצים המפורטים בהצהרה זו ונשמח לסייע.
+      </p>
+      {{/isTurnoverExempt}}
 
       <h2>נגישות בית העסק</h2>
       <p>
-        {/* REQUIRED for businesses with physical premises: the service-accessibility
-            regulations expect the statement to describe the actual physical
-            arrangements. Ask the owner and list them concretely (e.g. חניית נכים,
-            כניסה ללא מדרגות, רוחב מעברים, שירותים נגישים). Delete for online-only. */}
+        {/* REQUIRED for businesses with physical premises (reg. 34(א)(4)): the
+            statement must describe the actual physical arrangements. Ask the
+            owner and list them concretely (e.g. חניית נכים, כניסה ללא מדרגות,
+            רוחב מעברים, שירותים נגישים) — including what is ABSENT, with an
+            alternative service channel. Delete for online-only businesses. */}
         העסק ממוקם בכתובת {{ADDRESS}}. {{PHYSICAL_ACCESSIBILITY_DETAILS}}
       </p>
 
-      <h2>רכז נגישות ודרכי פנייה</h2>
+      <h2>פניות בנושא נגישות</h2>
       <p>
-        רכז הנגישות של העסק: {{COORDINATOR_BUSINESS}}.
+        {/* COORDINATOR_TITLE: use "רכז/ת הנגישות" ONLY if the business employs
+            25+ people (statutory duty, סעיף 19מא1 לחוק); otherwise use
+            "איש/אשת הקשר לפניות בנושא נגישות". */}
+        {{COORDINATOR_TITLE}} מטעם העסק: {{COORDINATOR_BUSINESS}}.
         <br />
         טלפון:{" "}
         <a href="{{PHONE_TEL}}" dir="ltr" className="underline">
           {{PHONE_DISPLAY}}
         </a>
       </p>
+      {{#hasStatutoryCoordinator}}
+      <p>
+        רכז/ת הנגישות מונה/תה בהתאם לסעיף 19מא1 לחוק שוויון זכויות לאנשים עם מוגבלות,
+        התשנ"ח-1998.
+      </p>
+      {{/hasStatutoryCoordinator}}
       <p>
         פניות בנושא נגישות האתר (תמיכה טכנית): {{COORDINATOR_TECH_NAME}}, דוא"ל:{" "}
         <a href="mailto:{{COORDINATOR_TECH_EMAIL}}" dir="ltr" className="underline">
@@ -81,10 +133,28 @@ function AccessibilityPage() {
         אתם משתמשים - ונשוב אליכם בתוך {{RESPONSE_DAYS}} ימי עסקים.
       </p>
 
-      <h2>הליך פנייה לגורם חיצוני</h2>
+      <h2>הפסקות זמניות בנגישות</h2>
       <p>
-        אם פניתם אלינו ופנייתכם לא נענתה בפרק זמן סביר, או שאינכם שבעי רצון מהטיפול, באפשרותכם לפנות
-        לנציבות שוויון זכויות לאנשים עם מוגבלות במשרד המשפטים, בכתובת:{" "}
+        אם התאמת נגישות באתר או בעסק תושבת באופן זמני לתקופה העולה על שבעה ימים (למשל
+        עקב תקלה או עבודות תחזוקה), נפרסם על כך הודעה בעמוד זה, בציון משך ההשבתה הצפוי
+        והחלופות העומדות לרשותכם באותה תקופה.
+      </p>
+
+      <h2>הליך פנייה לנציבות שוויון זכויות לאנשים עם מוגבלות</h2>
+      <p>
+        אם פניתם אלינו ופנייתכם לא נענתה בפרק זמן סביר, או שאינכם שבעי רצון מהטיפול, באפשרותכם
+        לפנות לנציבות שוויון זכויות לאנשים עם מוגבלות במשרד המשפטים: בטלפון{" "}
+        <span dir="ltr">*6763</span> (מחו"ל:{" "}
+        <span dir="ltr">+972-8-6831675</span>), באמצעות{" "}
+        <a
+          href="https://www.gov.il/he/service/complaint_discrimination_inaccessibility_people_with_disabilities"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="underline"
+        >
+          טופס תלונה מקוון
+        </a>{" "}
+        או דרך{" "}
         <a
           href="https://www.gov.il/he/departments/moj_disability_rights/govil-landing-page"
           target="_blank"

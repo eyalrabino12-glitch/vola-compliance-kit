@@ -34,11 +34,28 @@ export function LegalPageLayout({
           {children}
         </div>
       </main>
-      <footer className="border-t border-border py-8 text-center text-xs text-muted-foreground">
-        {{BUSINESS_NAME}} · {{ADDRESS}} ·{" "}
-        <a href="{{PHONE_TEL}}" dir="ltr" className="underline">
-          {{PHONE_DISPLAY}}
-        </a>
+      <footer className="border-t border-border py-8 text-center text-xs text-muted-foreground space-y-2">
+        <p>
+          {{BUSINESS_NAME}} · {{ADDRESS}} ·{" "}
+          <a href="{{PHONE_TEL}}" dir="ltr" className="underline">
+            {{PHONE_DISPLAY}}
+          </a>
+        </p>
+        <p>
+          {/* Reg. 35(ה) requires the accessibility statement to be reachable
+              prominently from every page — the audit checks these links. */}
+          <a href="/accessibility" className="underline">
+            הצהרת נגישות
+          </a>{" "}
+          ·{" "}
+          <a href="/privacy" className="underline">
+            מדיניות פרטיות
+          </a>{" "}
+          ·{" "}
+          <a href="/terms" className="underline">
+            תנאי שימוש
+          </a>
+        </p>
       </footer>
     </div>
   );

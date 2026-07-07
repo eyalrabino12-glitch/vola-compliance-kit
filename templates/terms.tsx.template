@@ -1,0 +1,97 @@
+import { createFileRoute } from "@tanstack/react-router";
+import { LegalPageLayout } from "@/components/LegalPageLayout";
+
+// Placeholder tokens are filled by scripts/fill-templates.mjs from site-legal.config.json.
+// Terms of use are NOT legally mandatory for a brochure site, but add liability
+// protection (IP, disclaimers, jurisdiction). Recommended: have an Israeli
+// lawyer review this page together with the privacy policy.
+export const Route = createFileRoute("/terms")({
+  head: () => ({
+    meta: [
+      { title: "תנאי שימוש | {{BUSINESS_NAME}}" },
+      { name: "description", content: "תנאי השימוש באתר {{BUSINESS_NAME}} - {{BUSINESS_DESCRIPTION}}." },
+    ],
+    links: [{ rel: "canonical", href: "{{SITE_URL}}/terms" }],
+  }),
+  component: TermsPage,
+});
+
+function TermsPage() {
+  return (
+    <LegalPageLayout title="תנאי שימוש" updated="{{UPDATED_MONTH_YEAR}}">
+      <p>
+        ברוכים הבאים לאתר של "{{BUSINESS_NAME}}" (להלן: "העסק" ו"האתר"). הגלישה והשימוש באתר
+        מהווים הסכמה לתנאי שימוש אלה. אם אינכם מסכימים לתנאים, אנא הימנעו משימוש באתר.
+      </p>
+
+      <h2>השימוש באתר</h2>
+      <p>
+        האתר נועד להצגת מידע על העסק ושירותיו וליצירת קשר עמו. השימוש באתר מותר למטרות
+        חוקיות בלבד. אין לעשות באתר שימוש הפוגע בפעילותו התקינה, בזכויות צדדים שלישיים או
+        בהוראות כל דין, לרבות ניסיונות חדירה, שיבוש או איסוף אוטומטי של תכנים.
+      </p>
+
+      <h2>קניין רוחני</h2>
+      <p>
+        כלל התכנים באתר - לרבות טקסטים, תמונות, לוגו, עיצוב וסימני מסחר - הם קניינם של העסק
+        או של צדדים שלישיים שהתירו לעסק להשתמש בהם. אין להעתיק, לשכפל, להפיץ או לעשות בהם
+        שימוש מסחרי ללא הסכמה מראש ובכתב מהעסק.
+      </p>
+
+      <h2>מידע כללי בלבד</h2>
+      <p>
+        התכנים באתר נועדו למידע כללי בלבד ואינם מהווים ייעוץ מקצועי מכל סוג. מחירים, שעות
+        פעילות ופרטי שירותים עשויים להשתנות מעת לעת; הנוסח המחייב הוא זה שיימסר בעת קבלת
+        השירות בעסק.
+      </p>
+
+      <h2>קישורים לשירותים חיצוניים</h2>
+      <p>
+        האתר עשוי לכלול קישורים לשירותים חיצוניים (למשל וואטסאפ, מפות ורשתות חברתיות).
+        העסק אינו אחראי לתוכנם, לזמינותם או למדיניות הפרטיות של שירותים אלה, והשימוש בהם
+        כפוף לתנאיהם.
+      </p>
+
+      <h2>הגבלת אחריות</h2>
+      <p>
+        האתר ותכניו מוצעים כמות שהם (As-Is). העסק פועל לכך שהמידע באתר יהיה מדויק ועדכני
+        ושהאתר יפעל באופן תקין, אך אינו מתחייב שהאתר יהיה חף מטעויות, זמין בכל עת או נקי
+        מרכיבים מזיקים, ולא יישא באחריות לנזק עקיף שייגרם משימוש באתר, ככל שהדבר מותר על
+        פי דין.
+      </p>
+
+      <h2>פרטיות ונגישות</h2>
+      <p>
+        השימוש באתר כפוף גם ל
+        <a href="/privacy" className="underline">
+          מדיניות הפרטיות
+        </a>{" "}
+        של האתר. מידע על נגישות האתר והעסק מפורט ב
+        <a href="/accessibility" className="underline">
+          הצהרת הנגישות
+        </a>
+        .
+      </p>
+
+      <h2>שינוי התנאים, דין ושיפוט</h2>
+      <p>
+        העסק רשאי לעדכן תנאים אלה מעת לעת; הנוסח המחייב הוא הנוסח המפורסם בעמוד זה, בציון
+        תאריך העדכון האחרון. על השימוש באתר יחולו דיני מדינת ישראל בלבד, וסמכות השיפוט
+        הבלעדית נתונה לבתי המשפט המוסמכים בישראל.
+      </p>
+
+      <h2>יצירת קשר</h2>
+      <p>
+        לשאלות בנוגע לתנאי השימוש: טלפון{" "}
+        <a href="{{PHONE_TEL}}" dir="ltr" className="underline">
+          {{PHONE_DISPLAY}}
+        </a>
+        {" "}או דוא"ל{" "}
+        <a href="mailto:{{CONTACT_EMAIL}}" dir="ltr" className="underline">
+          {{CONTACT_EMAIL}}
+        </a>
+        .
+      </p>
+    </LegalPageLayout>
+  );
+}
